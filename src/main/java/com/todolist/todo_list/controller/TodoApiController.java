@@ -53,28 +53,38 @@ public class TodoApiController {
                 String title = rs.getNString("title");
                 String content = rs.getString("content");
                 String manager = rs.getString("manager");
+                String password = rs.getString("password");
                 Date date = new Date(rs.getTimestamp("date").getTime());
-                return new TodoResponsDto(id, title, content, manager, date);
+                return new TodoResponsDto(id, title, password, content, manager, date);
             }
         });
     }
+
+    //수정 메소드 비밀번호 입력
     @PutMapping("todos/{id}")
     public Long update(@PathVariable Long id, @RequestBody TodoRequestDto requestDto) {
         TodoItem todoItem = findById(id);
+        String password = requestDto.getPassword();
         if (todoItem != null) {
-            String sql = "UPDATE todolist SET title = ?, content = ? WHERE id = ?";
-            jdbcTemplate.update(sql, requestDto.getTitle(), requestDto.getContent(), id);
-            return id;
+            if (todoItem.getPassword().equals(password)) {
+                String sql = "UPDATE todolist SET title = ?, content = ? WHERE id = ?";
+                jdbcTemplate.update(sql, requestDto.getTitle(), requestDto.getContent(), id);
+                return id;
+            }else{
+                throw new IllegalArgumentException("비밀번호 불일치");
+            }
         } else {
             throw new IllegalArgumentException("선택한 할 일은 존재하지 않습니다.");
         }
     }
     @DeleteMapping("todos/{id}")
-    public Long delete(@PathVariable Long id) {
+    public Long delete(@PathVariable Long id ,@RequestParam String password) {
         TodoItem todoItem = findById(id);
         if (todoItem != null) {
-            String sql = "DELETE FROM todolist WHERE id = ?";
-            jdbcTemplate.update(sql, id);
+            if (todoItem.getPassword().equals(password)) {
+                String sql = "DELETE FROM todolist WHERE id = ?";
+                jdbcTemplate.update(sql, id);
+            }
             return id;
         } else {
             throw new IllegalArgumentException("선택한 할 일은 존재하지 않습니다.");

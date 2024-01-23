@@ -11,6 +11,7 @@ public class TodoResponsDto {
     private Long id;
     private String title;
     private String content;
+    private String password;
     private String manager;
     private Date date;
 
@@ -18,6 +19,7 @@ public class TodoResponsDto {
         this.id = todoItem.getId();
         this.title = todoItem.getTitle();
         this.content = todoItem.getContent();
+        this.password = todoItem.getPassword();
         this.manager = todoItem.getManager();
         this.date = todoItem.getDate();
     }

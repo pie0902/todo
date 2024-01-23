@@ -9,8 +9,10 @@ import java.util.Date;
 public class TodoRequestDto {
     private String title;
     private String content;
-    public TodoRequestDto(String title,String content){
+    private String password;
+    public TodoRequestDto(String title,String content,String password){
         this.title = title;
         this.content = content;
+        this.password = password;
     }
 }

@@ -36,9 +36,10 @@ public class TodoController {
                 Long id = rs.getLong("id");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
+                String password = rs.getString("password");
                 String manager = rs.getString("manager");
                 Date date = new Date(rs.getTimestamp("date").getTime());
-                return new TodoResponsDto(id, title, content, manager, date);
+                return new TodoResponsDto(id, password, title, content, manager, date);
             }
         });
     }

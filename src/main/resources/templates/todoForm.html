@@ -62,22 +62,24 @@
 
 
     // 수정 폼 표시하는 함수
-    function showEditForm(id, title, content) {
+    function showEditForm(id, title, content , password) {
       const editForm = document.getElementById('editTodoForm');
       editForm.style.display = 'block';
       editForm.elements.id.value = id;
       editForm.elements.title.value = title;
       editForm.elements.content.value = content;
+      editForm.elements.password.value = password;
     }
 
+    //수정폼
     function submitEditForm(event) {
       event.preventDefault();
-
       const form = event.target;
       const id = form.elements.id.value;
       const data = {
         title: form.elements.title.value,
-        content: form.elements.content.value
+        content: form.elements.content.value,
+        password: form.elements.password.value
       };
 
       fetch(`/api/todos/${id}`, {
@@ -90,9 +92,10 @@
               .then(response => {
                 const editForm = document.getElementById('editTodoForm');
                 if (!response.ok) {
-                  throw new Error('Network response was not ok');
+                  throw new Error('네트워크나 비밀번호를 확인해주세요');
                 }
                 editForm.style.display = 'none'; //다시 안보이게
+                alert("성공적으로 수정됐습니다.");
                 loadTodos();
               })
               .catch(error => {
@@ -123,16 +126,19 @@
 
 
     function deleteTodo(id) {
-      fetch(`/api/todos/${id}`, { method: 'DELETE' })
-              .then(response => {
-                if (!response.ok) {
-                  throw new Error('Failed to delete todo');
-                }
-                loadTodos();
-              })
-              .catch(error => console.error('Error deleting todo:', error));
+      const password = prompt('비밀번호를 입력하세요:'); // 비밀번호 입력
+      if (password !== null) {
+        fetch(`/api/todos/${id}?password=${password}`, { method: 'DELETE' })
+                .then(response => {
+                  if (!response.ok) {
+                      throw new Error('Failed to delete todo');
+                  } else {
+                    loadTodos();
+                  }
+                })
+                .catch(error => console.error('Error deleting todo:', error));
+      }
     }
-
     // 페이지 로드
     window.onload = function() {
       loadTodos();
@@ -167,6 +173,7 @@
   <h3>수정폼</h3>
   <input type="text" name="title">
   <input type="text" name="content">
+  <input type="text" name="password">
   <button type="submit">수정</button>
 </form>
 
