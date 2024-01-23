@@ -17,7 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 ##sql
-application.propertiess
+src/main/resources/application.properties
 ### IntelliJ IDEA ###
 .idea
 *.iws
