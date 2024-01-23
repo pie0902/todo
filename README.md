@@ -85,6 +85,7 @@ public Long delete(@PathVariable Long id ,@RequestParam String password) {
 }
 ~~~
 - 위 코드는 삭제를 하는 api인데 id값은 @PathVariable로 비밀번호는 @RequestParam으로 받아왔다. 두 개의 차이를 이론적으로는 알고 있었지만 더 와닿게 체험하고자 똑같은 값으로 줬더니 url경로에 password가 그대로 노출됐다.
+- 차이점을 알고 이해를 했다.
 ### 🟡 4.JdbcTemplate
 - jdbc템플릿을 사용하면서 사실 이해가 잘 안 돼서 강의를 그대로 따라 했다. 이런 식으로 무엇을 만들면 무슨 소용이 있겠나.. 싶긴 했지만 이해하는 과정이라고 생각하면서 과제를 진행했더니 전체적인 구조를 조금을 알게 됐다. 하지만 아직도 이해가 완벽히 되지 않는 것이 현실이다.
 #### 👊 해결책 :
