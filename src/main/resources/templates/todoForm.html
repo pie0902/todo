@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Todo List</title>
+  <script>
+    function loadTodos() {
+      fetch('/api/todos')
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(todos => {
+                const todoList = document.getElementById('todoList');
+                todoList.innerHTML = '';
+                todos.forEach(todo => {
+                  const todoItem = document.createElement('div');
+                  todoItem.innerHTML = `
+                    <h3>${todo.title}</h3>
+                    <p>${todo.content}</p>
+                    <button onclick="showEditForm(${todo.id}, '${todo.title}', '${todo.content}')">수정</button>
+                `;
+                  todoList.appendChild(todoItem);
+                });
+              })
+              .catch(error => {
+                console.error('Failed to load todos:', error);
+              });
+    }
+
+    function addTodo(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const data = {
+        title: form.elements.title.value,
+        content: form.elements.content.value
+      };
+
+      fetch('/api/todos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(addedTodo => {
+                loadTodos();
+              })
+              .catch(error => {
+                console.error('Adding todo failed:', error);
+              });
+    }
+
+
+    // 수정 폼 표시하는 함수
+    function showEditForm(id, title, content) {
+      const editForm = document.getElementById('editTodoForm');
+      editForm.style.display = 'block';
+      editForm.elements.id.value = id;
+      editForm.elements.title.value = title;
+      editForm.elements.content.value = content;
+    }
+
+    function submitEditForm(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const id = form.elements.id.value;
+      const data = {
+        title: form.elements.title.value,
+        content: form.elements.content.value
+      };
+
+      fetch(`/api/todos/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+              .then(response => {
+                const editForm = document.getElementById('editTodoForm');
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                editForm.style.display = 'none'; //다시 안보이게
+                loadTodos();
+              })
+              .catch(error => {
+                console.error('Updating todo failed:', error);
+              });
+    }
+
+    function loadTodos() {
+      fetch('/api/todos')
+              .then(response => response.json())
+              .then(todos => {
+                const todoList = document.getElementById('todoList');
+                todoList.innerHTML = '';
+
+                todos.forEach(todo => {
+                  const todoItem = document.createElement('div');
+                  todoItem.innerHTML = `
+          <h3>${todo.title}</h3>
+          <p>${todo.content}</p>
+          <button onclick="showEditForm(${todo.id}, '${todo.title}', '${todo.content}')">수정</button>
+          <button onclick="deleteTodo(${todo.id})">삭제</button>
+        `;
+                  todoList.appendChild(todoItem);
+                });
+              })
+              .catch(error => console.error('Failed to load todos:', error));
+    }
+
+
+    function deleteTodo(id) {
+      fetch(`/api/todos/${id}`, { method: 'DELETE' })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Failed to delete todo');
+                }
+                loadTodos();
+              })
+              .catch(error => console.error('Error deleting todo:', error));
+    }
+
+    // 페이지 로드
+    window.onload = function() {
+      loadTodos();
+    }
+  </script>
+</head>
+<style>
+  #editTodoForm {
+    position:absolute;
+    padding:20px;
+    top:10%;
+    left:30%;
+    border:1px solid black;
+  }
+
+</style>
+<body>
+<h1>Todo List</h1>
+
+<form id="addTodoForm" onsubmit="addTodo(event)">
+  <input type="text" name="title" placeholder="할 일">
+  <input type="text" name="content" placeholder="내용">
+  <button type="submit">추가</button>
+</form>
+
+
+<div id="todoList"></div>
+
+
+<form id="editTodoForm" style="display:none;" onsubmit="submitEditForm(event)">
+  <input type="hidden" name="id">
+  <h3>수정폼</h3>
+  <input type="text" name="title">
+  <input type="text" name="content">
+  <button type="submit">수정</button>
+</form>
+
+<div id="result"></div>
+</body>
+</html>
