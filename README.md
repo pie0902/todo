@@ -66,7 +66,7 @@
 * 프로젝트를 생성할 때 Thymeleaf 라이브러리를 추가했는데 과제를 완성하려고 강의를 보면서 다른 것들을 구현하느라 Thymeleaf를 활용하지 못했다. 다행히 자바스크립트를 할 줄 알아서 간단하게 html을 만들어서 해결했지만 Thymeleaf의 매력을 알고 싶었다.
 #### 👊 해결책 :
 * 이번주 주말에 스프링을 처음부터 다시 공부하면서 Thymeleaf관련 자료도 공부하면 될 것 같다.
-#### 🟡 3. @PathVariable & @RequestParam
+#### 🟡 3. @PathVariable & @RequestParam & @RequestBody
 - 데이터를 전달하는 방식을 제대로 알고 사용하는 것이 아닌 것 같다고 생각이 들었다. 동적인 상황과 정적인 상황에서 제대로 사용해야 하는데 의미를 잘 모르고 사용했다.
 #### 👊 해결책
 ~~~
@@ -84,7 +84,7 @@ public Long delete(@PathVariable Long id ,@RequestParam String password) {
     }  
 }
 ~~~
-- 위 코드는 삭제를 하는 api인데 id값은 @PathVariable로 비밀번호는 @RequestParam으로 받아왔다. 두 개의 차이를 이론적으로는 알고 있었지만 더 와닿게 체험하고자 똑같은 값으로 줬더니 url경로에 password가 그대로 노출됐다.
+- 위 코드는 삭제를 하는 api인데 id값은 @PathVariable로 비밀번호는 @RequestParam으로 받아왔다. 데이터를 받는 차이를 몰라서 비밀번호를 잘못된 방식으로 받아왔다.민감한 정보는 RequestBody로 받아야한다.
 - 차이점을 알고 이해를 했다.
 ### 🟡 4.JdbcTemplate
 - jdbc템플릿을 사용하면서 사실 이해가 잘 안 돼서 강의를 그대로 따라 했다. 이런 식으로 무엇을 만들면 무슨 소용이 있겠나.. 싶긴 했지만 이해하는 과정이라고 생각하면서 과제를 진행했더니 전체적인 구조를 조금을 알게 됐다. 하지만 아직도 이해가 완벽히 되지 않는 것이 현실이다.
