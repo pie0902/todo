@@ -1,6 +1,8 @@
 
 # TODO LIST
 
+**[수정ver](https://github.com/pie0902/newTodo)📍**
+
 ## 🟢 개인과제
 
 ### 📋 개인과제 요구사항 설명
