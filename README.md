@@ -1,7 +1,7 @@
 
 # TODO LIST
 
-**[수정ver](https://github.com/pie0902/newTodo)📍**
+**[코드 리팩토링](https://github.com/pie0902/newTodo)📍**
 
 ## 🟢 개인과제
 
